@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'build.ps1', '.github/workflows/build.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Générer l'extension, le userscript et la page d'installation
+        run: powershell -ExecutionPolicy Bypass -File build.ps1
+      - name: Enregistrer les fichiers générés
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add extension video-assistant.user.js installer.html bookmarklet.txt video-assistant-extension.zip
+          git diff --cached --quiet || (git commit -m "Build : fichiers générés" && git push)
