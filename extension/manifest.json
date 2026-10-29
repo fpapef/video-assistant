@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Video Assistant",
+  "version": "1.0",
+  "description": "Ouvre n'importe quelle vidéo dans un lecteur plein écran avec gestes et raccourcis, comme Samsung Internet.",
+  "icons": { "16": "icon16.png", "48": "icon48.png", "128": "icon128.png" },
+  "action": { "default_title": "Ouvrir la vidéo dans le lecteur", "default_icon": { "16": "icon16.png", "48": "icon48.png" } },
+  "background": { "service_worker": "background.js", "scripts": ["background.js"] },
+  "commands": {
+    "open-player": { "suggested_key": { "default": "Alt+Shift+V" }, "description": "Ouvrir la vidéo dans le lecteur" }
+  },
+  "content_scripts": [
+    { "matches": ["<all_urls>"], "js": ["va.js"], "all_frames": true, "run_at": "document_idle" }
+  ],
+  "browser_specific_settings": { "gecko": { "id": "video-assistant@local", "strict_min_version": "121.0" } }
+}
